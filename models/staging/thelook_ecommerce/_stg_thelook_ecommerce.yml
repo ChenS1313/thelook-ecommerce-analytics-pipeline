@@ -1,0 +1,222 @@
+version: 2
+
+models:
+  - name: stg_thelook_ecommerce__distribution_centers
+    columns:
+      - name: distribution_center_id
+        description: Primary key
+        tests:
+          - unique
+          - not_null 
+
+      - name: city
+        description: City where the distribution center is located 
+        tests:
+          - not_null
+
+      - name: state_code
+        description: State code parsed from center name
+        tests:
+          - not_null 
+
+      - name: latitude
+        description: Geographic latitude
+        tests:
+          - not_null
+
+      - name: longitude
+        description: Geographic longitude
+        tests:
+          - not_null    
+#-------------------------------------------------------------------------------------------------------#
+  - name: stg_thelook_ecommerce__events
+    columns:
+      - name: event_id
+        description: Primary Key
+        tests:
+          - unique
+          - not_null
+
+      - name: created_at
+        description: Timestamp when the event occurred
+        tests:
+          - not_null
+
+      - name: event_type
+        description: Type of event performed by the user
+        tests:
+          - accepted_values:
+              arguments:
+                values: ['product','cart','department','purchase','cancel','home']
+
+#-------------------------------------------------------------------------------------------------------#
+  - name: stg_thelook_ecommerce__inventory_items
+    columns: 
+      - name: inventory_item_id
+        description: Primary Key
+        tests:
+          - unique
+          - not_null
+
+      - name: product_id
+        description: Foreign key -> References the products table
+        tests:
+          - not_null 
+
+      - name: distribution_center_id
+        description: Foreign key -> References the products table
+        tests:
+          - not_null
+          
+      - name: created_at
+        description: Timestamp when record was created in the table
+        tests:
+          - not_null
+
+      - name: cost
+        description: Cost of the item, rounded to 2 decimal places
+        tests:
+          - not_null
+    
+      - name: retail_price
+        description: Cost of the item, rounded to 2 decimal places
+        tests:
+          - not_null
+
+
+#-------------------------------------------------------------------------------------------------------#
+  - name: stg_thelook_ecommerce__order_items
+    columns:
+      - name: order_item_id
+        description: Primary Key
+        tests:
+          - unique
+          - not_null
+          
+      - name: order_id
+        description: Foreign key -> References the orders table
+        tests:
+          - not_null    
+              
+      - name: user_id
+        description: Foreign key -> References the users table
+        tests:
+          - not_null    
+              
+      - name: product_id
+        description: Foreign key -> References the users table
+        tests:
+          - not_null    
+         
+      - name: inventory_item_id
+        description: Foreign key -> References the inventory_items table
+        tests:
+          - not_null
+            
+
+      - name: created_at
+        description: Timestamp when the order item was placed
+        tests:
+          - not_null 
+
+
+      - name: status
+        description: Current status of the item
+        tests:
+          - accepted_values:
+              arguments:
+                values: ['Shipped','Complete','Processing','Cancelled','Returned']
+
+      - name: sale_price
+        description: sale price of the item
+        tests:
+        - not_null
+          
+           
+#-------------------------------------------------------------------------------------------------------#
+  - name: stg_thelook_ecommerce__orders
+    columns:
+      - name: order_id
+        description: Primary key
+        tests:
+          - not_null
+          - unique
+
+      - name: user_id
+        description: Foreign key -> References the users table
+        tests:
+          - not_null
+          
+      - name: status
+        description: Current order status
+        tests:
+          - not_null
+          - accepted_values:
+              arguments: 
+                values: ['Complete', 'Cancelled', 'Processing', 'Shipped', 'Returned']
+
+      - name: gender
+        description: Gender associated with the order
+        tests:
+          - accepted_values:
+              arguments:
+                values: ['M', 'F']
+
+
+      - name: created_at
+        description: Timestamp when the order was created
+        tests:
+          - not_null
+
+      - name: num_of_items
+        description: Total number of items in the order
+        tests:
+          - not_null
+      
+      
+#-------------------------------------------------------------------------------------------------------#
+
+  - name: stg_thelook_ecommerce__products
+    columns:
+      - name: product_id
+        description: Primary key
+        tests:
+          - not_null
+          - unique
+
+      - name: distribution_center_id
+        description: Foreign key -> References distribution_centers table
+        tests:
+          - not_null
+
+      - name: product_name
+        tests:
+          - not_null
+
+      - name: cost
+        tests:
+          - not_null
+
+      - name: retail_price
+        tests:
+          - not_null      
+
+
+#-------------------------------------------------------------------------------------------------------#
+  - name: stg_thelook_ecommerce__users
+    columns:
+      - name: user_id
+        description: Primary key
+        tests:
+          - not_null
+          - unique
+
+      - name: created_at
+        description: Timestamp when the user account was created
+        tests:
+          - not_null 
+
+      - name: traffic_source
+        description: Marketing channel from which the user arrived
+        tests:
+          - not_null

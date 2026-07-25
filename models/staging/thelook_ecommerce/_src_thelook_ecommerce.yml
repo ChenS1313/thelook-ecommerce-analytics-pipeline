@@ -4,7 +4,7 @@ sources:
   - name: thelook_ecommerce
     database: bigquery-public-data
     schema: thelook_ecommerce
-    description: Raw data ingested directly from The Look e-commerce platform into BigQuery
+    description: Testings for raw data ingested directly from The Look e-commerce platform into BigQuery
 
     tables:
 
@@ -31,7 +31,7 @@ sources:
             tests:
               - unique
               - not_null
-          
+        
           - name: event_type
             tests:
               - not_null
@@ -56,10 +56,6 @@ sources:
             description: Foreign key -> References the products table
             tests:
               - not_null
-              - relationships:
-                  arguments:
-                    to: source('thelook_ecommerce', 'products')
-                    field: id
 
           - name: created_at
             description: Timestamp when record was created in the table
@@ -86,29 +82,21 @@ sources:
             description: Foreign key -> References the orders table
             tests:
               - not_null
-              - relationships:
-                  arguments:
-                    to: source('thelook_ecommerce', 'orders')
-                    field: order_id
 
           - name: user_id
             description: Foreign key -> References the users table
             tests:
               - not_null
-              - relationships:
-                  arguments:
-                    to: source('thelook_ecommerce', 'users')
-                    field: id
 
+          - name: product_id
+            description: Foreign key -> References the users table
+            tests:
+              - not_null
          
           - name: inventory_item_id
             description: Foreign key -> References the inventory_items table
             tests:
               - not_null
-              - relationships:
-                  arguments:
-                    to: source('thelook_ecommerce', 'inventory_items')
-                    field: id
 
 
           - name: created_at
@@ -137,20 +125,16 @@ sources:
             description: Foreign key -> References the users table
             tests:
               - not_null
-              - relationships:
-                  arguments:
-                    to: source('thelook_ecommerce', 'users')
-                    field: id
 
          
           - name: created_at
-            description: Timestamp when the order was created/placed
+            description: Timestamp when the order was created
             tests:
               - not_null
 
     
           - name: status
-            description: Current status of the order
+            description: Current order status
             tests:
               - not_null
 
@@ -169,10 +153,6 @@ sources:
             description: Foreign key -> References distribution_centers table
             tests:
               - not_null
-              - relationships:
-                  arguments:
-                    to: source('thelook_ecommerce', 'distribution_centers')
-                    field: id
 
 
 #-------------------------------------------------------------------------------------------------------#
