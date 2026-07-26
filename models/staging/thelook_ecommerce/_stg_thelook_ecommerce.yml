@@ -68,7 +68,7 @@ models:
         tests:
           - not_null
           
-      - name: created_at
+      - name: arrived_at
         description: Timestamp when record was created in the table
         tests:
           - not_null
@@ -114,7 +114,7 @@ models:
           - not_null
             
 
-      - name: created_at
+      - name: item_created_at
         description: Timestamp when the order item was placed
         tests:
           - not_null 
@@ -197,7 +197,7 @@ models:
         tests:
           - not_null
 
-      - name: retail_price
+      - name: sale_price
         tests:
           - not_null      
 

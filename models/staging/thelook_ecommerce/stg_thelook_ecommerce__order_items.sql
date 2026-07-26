@@ -14,11 +14,11 @@ renamed as (
         cast(user_id as string) as user_id,
         cast(product_id as string) as product_id,
         cast(inventory_item_id as string) as inventory_item_id,
-        status,
-        created_at,
+        created_at as item_created_at,
         shipped_at,
         delivered_at,
         returned_at,
+        status,
         round(cast(sale_price as numeric),2) as sale_price
 
     from source

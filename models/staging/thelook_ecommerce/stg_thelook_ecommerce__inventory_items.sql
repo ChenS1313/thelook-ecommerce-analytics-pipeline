@@ -17,10 +17,11 @@ renamed as (
         product_brand as brand,
         product_name,
         product_sku,
-        created_at,
+        created_at as arrived_at,
         sold_at,
-        round(cast(cost as numeric),2) as cost,
-        round(cast(product_retail_price as numeric),2) as retail_price
+        round(cast(product_retail_price as numeric),2) as retail_price,
+        round(cast(cost as numeric),2) as cost
+        
         
 
     from source
