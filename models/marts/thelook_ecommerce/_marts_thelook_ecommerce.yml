@@ -1,0 +1,401 @@
+version: 2
+
+models:
+  - name: dim_orders 
+    description: Order-level dimension table combining order attributes with aggregated metrics
+    columns:
+
+      - name: order_id
+        description: Primary key 
+        tests:
+          - unique
+          - not_null
+
+      - name: user_id
+        description: Foreign key -> References the users table
+        tests:
+          - not_null
+          - relationships:
+              arguments:
+                to: ref('stg_thelook_ecommerce__users') # checks that every order has a user in the users table
+                field: user_id
+      
+          
+      - name: status
+        tests:
+          - not_null
+
+      - name: num_of_items
+        description: Number of items in the order
+        tests:
+          - not_null
+          - dbt_utils.expression_is_true:
+              arguments:
+                expression: ">= 1"
+
+      - name: created_at
+        tests:
+          - not_null
+
+      - name: order_sales
+        tests:
+          - not_null
+          - dbt_utils.expression_is_true:
+              arguments:
+                expression: ">= 0"
+
+      - name: order_cost
+        tests:
+          - not_null
+          - dbt_utils.expression_is_true:
+              arguments:
+                expression: ">= 0"
+
+      - name: order_profit
+        tests:
+          - not_null
+
+      - name: returned_items_count
+        tests:
+          - not_null
+          - dbt_utils.expression_is_true:
+              arguments:
+                expression: ">= 0"
+
+      - name: days_to_ship
+        description: Days between order creation and shipment
+        tests:
+          - dbt_utils.expression_is_true:
+              arguments:
+                expression: ">= 0 or days_to_ship is null"
+
+      - name: days_to_deliver
+        description: Days between order creation and delivery
+        tests:
+          - dbt_utils.expression_is_true:
+              arguments:
+                expression: ">= 0 or days_to_deliver is null"
+
+  
+  #----------------------------------------------------------------------------------------------------------#
+  - name: dim_products
+    description: Products dimension table containing product attributes, distribution center locations, and aggregated metrics."
+    tests:
+      - dbt_utils.expression_is_true:
+          arguments:
+            expression: " distribution_center_latitude between -90 and 90 or distribution_center_latitude is null"
+      - dbt_utils.expression_is_true:
+          arguments:
+            expression: "distribution_center_longitude between -180 and 180 or distribution_center_longitude is null"
+    columns:
+      - name: product_id
+        description: Primary key of the product
+        tests:
+          - unique
+          - not_null
+
+      - name: distribution_center_id
+        description: Foreign key -> References the distribution_centers table
+        tests:
+          - not_null
+
+      - name: sale_price
+        description: price of the product.
+        tests:
+          - not_null
+          - dbt_utils.expression_is_true:
+              arguments:
+                expression: ">= 0"
+
+      - name: cost
+        description: 
+        tests:
+          - not_null
+          - dbt_utils.expression_is_true:
+              arguments:
+                expression: ">= 0"
+
+
+      - name: total_units_sold
+        description: Total count of items sold for this product
+        tests:
+          - not_null
+          - dbt_utils.expression_is_true:
+              arguments:
+                expression: ">= 0"
+
+      - name: total_sales
+        description: Total sales of this product
+        tests:
+          - not_null
+          - dbt_utils.expression_is_true:
+              arguments:
+                expression: ">= 0"
+
+      - name: total_profit
+        description: Total profit of this product
+        tests:
+          - not_null
+
+      - name: total_units_returned
+        description: Total count of units returned for this product
+        tests:
+          - not_null
+          - dbt_utils.expression_is_true:
+              arguments:
+                expression: ">= 0"
+          - dbt_utils.expression_is_true:
+              arguments:
+                expression: "<= total_units_sold"
+
+#----------------------------------------------------------------------------------------------------------#
+  - name: dim_users
+    description: User dimension table combining attributes and metrics
+    tests:
+      - dbt_utils.expression_is_true:
+            arguments:
+              expression: "first_order_date >= user_created_at or first_order_date is null"
+      - dbt_utils.expression_is_true:
+          arguments:
+            expression: "most_recent_order_date >= first_order_date or most_recent_order_date is null"
+            
+    columns:
+      - name: user_id
+        description: Primary key 
+        tests:
+          - unique
+          - not_null
+
+      - name: email
+        tests:
+          - not_null
+
+      - name: age 
+        tests:
+          - not_null
+          - dbt_utils.expression_is_true:
+              arguments:
+                expression: ">= 0" # depends on which options are valid
+
+      - name: total_orders
+        description: Total number of distinct orders placed by the user
+        tests:
+          - not_null
+          - dbt_utils.expression_is_true:
+              arguments:
+                expression: ">= 0"
+
+      - name: lifetime_value
+        description: Total user's sales across all orders
+        tests:
+          - not_null
+          - dbt_utils.expression_is_true:
+              arguments:
+                expression: ">= 0"
+
+      - name: total_profit
+        tests:
+          - not_null
+
+      - name: latitude
+        tests:
+          - dbt_utils.expression_is_true:
+              arguments:
+                expression: "between -90 and 90 or latitude is null"
+
+      - name: longitude
+        tests:
+          - dbt_utils.expression_is_true:
+              arguments:
+                expression: "between -180 and 180 or longitude is null"
+
+      - name: user_created_at
+        description: Timestamp when the user account was created
+        tests:
+          - not_null
+
+  #--------------------------------------------------------------------------------------------------#
+  - name: fct_inventory_items
+    description: "Fact table for inventory items, tracking stock movement, potential profitability, and days spent in inventory."
+    columns:
+      - name: inventory_item_id
+        description: Primary key
+        tests:
+          - unique
+          - not_null
+
+      - name: product_id
+        description: Foreign key -> References the products table
+        tests:
+          - not_null
+          - relationships:
+              arguments:
+                to: ref('stg_thelook_ecommerce_products')
+                field: product_id  # checks that every inventory_item has a product_id in the dim_products table
+
+      - name: distribution_center_id
+        description: Foreign key -> References the distribution centers table
+        tests:
+          - not_null
+          - relationships:
+              arguments:
+                to: ref('stg_thelook_ecommerce_products')
+                field: distribution_center_id # checks that every inventory_item has a distribution_center in the dim_products table
+
+      - name: sale_price
+        tests:
+          - not_null
+          - dbt_utils.expression_is_true:
+              arguments:
+                expression: ">= 0"
+
+      - name: cost
+        tests:
+          - not_null
+          - dbt_utils.expression_is_true:
+              arguments:
+                expression: ">= 0"
+
+      - name: potential_profit
+        description: profit if item is sold
+        tests:
+          - not_null
+
+      - name: days_in_inventory
+        description: Number of days the item spent/is spending in inventory
+        tests:
+          - not_null
+          - dbt_utils.expression_is_true:
+              arguments:
+                expression: ">= 0"
+
+      - name: arrived_at
+        tests:
+          - not_null
+
+      - name: sold_at
+        tests:
+          - dbt_utils.expression_is_true:
+              arguments:
+                expression: ">= arrived_at or sold_at is null"
+
+#------------------------------------------------------------------------------------------------------#
+  - name: fct_order_items
+    description: Fact table for order items
+    columns:
+      - name: order_item_id
+        description: Primary key
+        tests:
+          - unique
+          - not_null
+
+      # Foreign Keys & Source Relationships
+      - name: order_id
+        tests:
+          - not_null
+
+      - name: user_id
+        description: Foreign key -> References the users table
+        tests:
+          - not_null
+          - relationships:
+              arguments:
+                to: ref('stg_thelook_ecommerce__users')
+                field: user_id # checks that every item has a user_id in the users table
+
+      - name: product_id
+        description: Foreign key -> References the products table
+        tests:
+          - not_null
+          - relationships:
+              arguments:
+                to: ref('stg_thelook_ecommerce__products')
+                field: product_id # checks that every item has a product_id in the products table
+
+      - name: user_id
+        description: Foreign key -> References the users table
+        tests:
+          - not_null
+          - relationships:
+              arguments:
+                to: ref('stg_thelook_ecommerce__users')
+                field: user_id # checks that every item has a user_id in the users table
+      
+      - name: inventory_item_id
+        description: Foreign key -> References the inventory_items table
+        tests:
+          - not_null
+          - relationships:
+              arguments:
+                to: ref('stg_thelook_ecommerce__inventory_items')
+                field: inventory_item_id # checks that every item has an inventory_item_id in the inventory items table
+      
+      - name: sale_price
+        tests:
+          - not_null
+          - dbt_utils.expression_is_true:
+              arguments:
+                expression: ">= 0"
+
+      - name: cost
+        tests:
+          - not_null
+          - dbt_utils.expression_is_true:
+              arguments:
+                expression: ">= 0"
+
+      - name: profit
+        tests:
+          - not_null
+          - dbt_utils.expression_is_true:
+              arguments:
+                expression: ">= 0"
+
+  #----------------------------------------------------------------------------------------------------------------------#
+  - name: fct_sessions
+    description: Fact table aggregating sessions
+    columns:
+      - name: session_id
+        description: Primary key
+        tests:
+          - unique
+          - not_null
+
+      - name: user_id
+        description: Foreign key -> References the users table
+        tests:
+          - relationships:
+              arguments:
+                to: ref('stg_thelook_ecommerce__users')
+                field: user_id # checks that every session has a user_id in the users table
+      
+      - name: traffic_source
+        tests:
+          - not_null
+
+      - name: browser
+        tests:
+          - not_null
+
+      - name: session_started_at
+        tests:
+          - not_null
+
+      - name: session_ended_at
+        tests:
+          - not_null
+
+      - name: session_duration_minutes
+        tests:
+          - not_null
+          - dbt_utils.expression_is_true:
+              arguments:
+                expression: ">= 0"
+
+      - name: total_events
+        description: Total count of events performed during the session
+        tests:
+          - not_null
+          - dbt_utils.expression_is_true:
+              arguments:
+                expression: ">= 1"

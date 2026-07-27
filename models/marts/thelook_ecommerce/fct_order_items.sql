@@ -1,6 +1,6 @@
 with items as (
     select * 
-    from {{ ref('int_thelook_ecommerce__order_items_aggregated') }}
+    from {{ ref('int_thelook_ecommerce__order_items') }}
 )
 
 select

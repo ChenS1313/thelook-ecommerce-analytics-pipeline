@@ -19,7 +19,7 @@ product_info as (
         sum(sale_price) as total_sales,
         sum(profit) as total_profit,
         count(distinct case when returned_at is not null then order_item_id end) as total_units_returned
-    from {{ ref('int_thelook_ecommerce__order_items_aggregated') }}
+    from {{ ref('int_thelook_ecommerce__order_items') }}
     group by 1
 )
 
@@ -48,10 +48,10 @@ select
  
 
     p.distribution_center_id,
-    dc.city,
-    dc.state_code,
-    dc.longitude,
-    dc.latitude
+    dc.city as distribution_center_city,
+    dc.state_code as distribution_center_state_code,
+    dc.longitude as distribution_center_longitude,
+    dc.latitude as distribution_center_latitude
 
 from products p
 left join product_info pi

@@ -12,7 +12,7 @@ order_items_aggregated as
         sum(cost) as order_cost,
         sum(profit) as order_profit,
         sum(case when returned_at is not null then 1 else 0 end) as returned_items_count
-    from {{ ref('int_thelook_ecommerce__order_items_aggregated') }}
+    from {{ ref('int_thelook_ecommerce__order_items') }}
     group by 1
 )
 

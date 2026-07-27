@@ -22,9 +22,9 @@ select
     i.product_sku,
 
     -- Measures
-    i.retail_price,
+    i.sale_price,
     i.cost,
-    (i.retail_price - i.cost) as potential_profit,
+    (i.sale_price - i.cost) as potential_profit,
 
     -- Timestamps
     i.arrived_at,

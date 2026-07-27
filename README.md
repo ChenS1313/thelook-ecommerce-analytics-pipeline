@@ -2,8 +2,7 @@
 
 ## Executive summary:
 
-This project demonstrates an end-to-end analytics engineering pipeline using Google BigQuery and dbt to model raw e-commerce data into a Star Schema for downstream analytics.
-
+This project demonstrates an end-to-end analytics engineering pipeline using Google BigQuery and dbt to transform raw e-commerce data into a structured, production-ready data warehouse for downstream analytics.
 
 ## 📋 Table of Contents
 * [🏗️ Architecture & Data Pipeline](#-architecture--data-pipeline)
@@ -20,15 +19,15 @@ This project demonstrates an end-to-end analytics engineering pipeline using Goo
 ## 🏗️ Architecture & Data Pipeline
 The data pipeline processes raw e-commerce transaction data stored in Google BigQuery in the following layers:
 * **Raw Layer (source):** Transactional source data in BigQuery.
-* **Staging (`stg_`):** Cleans, renames, and standardizes raw data while maintaining the original table granularity (1:1).
-* **Intermediate (`int_`):** * Handles all heavy calculations and business logic in one place, so downstream models stay clean and easy to build.
+* **Staging (`stg_`):** Cleans, renames, and standardizes raw data while maintaining the original table granularity.
+* **Intermediate (`int_`):**  Handles all heavy calculations and business logic in one place, so downstream models stay clean and easy to build.
 * **Marts (`fct_`, `dim_`):** Transforms clean staging data into easy-to-use business tables methodology.
 
 
 ## 🧪 Data Quality & Governance
 ### Raw Layer (source)
  To ensure data integrity, automated tests and freshness checks are applied directly at the source layer:
-* **Source Testing:** Applied `unique` and `not_null` on primary keys, and `not_null` on foreign keys.
+* **Source Testing:** Applied `unique` and `not_null` on primary keys, and `not_null` on important foreign keys.
 * **Source Freshness:** Used `dbt source freshness` to detect delayed or missing sources. 
 ### Staging Layer (`stg_`)
 #### Standardized raw data using SQL
@@ -38,13 +37,13 @@ The data pipeline processes raw e-commerce transaction data stored in Google Big
 * **Cleaned Values:** Removed extra spaces with `TRIM()` and replaced missing values using `COALESCE()`.
 
 #### Created automated tests on the staging layer
-* **Keys:** Applied `unique` and `not_null` on primary keys, and `not_null` on foreign keys.
+* **Keys:** Applied `unique` and `not_null` on primary keys, and `not_null` on important foreign keys (like `order_id` in `stg_order_items`).
 * **Core Fields:** Set `not_null` on critical business fields like dates, cost, and prices and used `accepted_values` to make sure categorical fields only contain allowed values.
 * **Edge Case (`stg_products`):** Fixed 2 sold products with missing names using `COALESCE(name, CAST(id AS STRING))` in SQL while leaving a `not_null` test to catch future issues.
 
 ### Intermediate Layer (`int_`):
 * **Financial Calculations**: Calculated item profit (sale_price - cost) in one place so all downstream models use the exact same logic.
-* **Data Level (Grain)**: Kept the data at the single item level (order_item_id) so it can easily feed both Fact and Dimension tables.
+* **Automated tests**: Created automated tests on the intermediate layer.
 
 ### Marts Layer (`fct_`, `dim_`):
 #### Transformed clean data into structured business models for analysis while creating calculated attributes to minimize runtime by reducing JOINs and GROUP BY operations
@@ -57,4 +56,9 @@ The data pipeline processes raw e-commerce transaction data stored in Google Big
  * `dim_users`: Contains customer profiles and overall spending habits.
   * `dim_products`: Holds product details like category, brand, and retail price.
   * `dim_orders`: Summarizes total order amounts and total items to avoid heavy group-by queries.
- [IN PROGRESS...]
+
+#### Created automated tests on the marts layer
+* **Keys:**  Applied `unique` and `not_null` on primary keys to prevent duplicate or missing records.
+* **Table Connections (`relationships`):** Verified that IDs in the fact tables (like `user_id` or `product_id`) exist in our main source tables (`stg_`), so we don't end up with orders linked to missing users or products.
+* **Logical Checks (`dbt_utils`):** Added basic sanity checks (using `dbt_utils.expression_is_true`) to make sure the data makes sense - like ensuring prices and session lengths aren't negative, and that every session has at least one event.
+

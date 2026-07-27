@@ -19,7 +19,7 @@ renamed as (
         product_sku,
         created_at as arrived_at,
         sold_at,
-        round(cast(product_retail_price as numeric),2) as retail_price,
+        round(cast(product_retail_price as numeric),2) as sale_price,
         round(cast(cost as numeric),2) as cost
         
         

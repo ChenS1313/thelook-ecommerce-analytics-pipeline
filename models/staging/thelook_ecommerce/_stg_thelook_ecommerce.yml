@@ -78,7 +78,7 @@ models:
         tests:
           - not_null
     
-      - name: retail_price
+      - name: sale_price
         description: Cost of the item, rounded to 2 decimal places
         tests:
           - not_null
