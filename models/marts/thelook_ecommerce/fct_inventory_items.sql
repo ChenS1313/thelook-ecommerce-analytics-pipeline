@@ -5,6 +5,7 @@ with inventory_items as
 )
 
 
+
 select
     -- Primary Key
     i.inventory_item_id,

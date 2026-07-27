@@ -1,50 +1,30 @@
-with order_items as 
-(
+with items as (
     select * 
-    from {{ ref('stg_thelook_ecommerce__order_items') }}
-),
-products as 
-(
-    select product_id,
-           cost
-    from {{ ref('stg_thelook_ecommerce__products') }}
-),
-
-orders as 
-(
-    select order_id,
-           created_at as order_created_at,
-    from {{ ref('stg_thelook_ecommerce__orders') }}
-
+    from {{ ref('int_thelook_ecommerce__order_items_aggregated') }}
 )
 
-
-select  
+select
     -- Primary Key
-    oi.order_item_id,
+    i.order_item_id,
 
-    -- Foreign Keys
-    oi.order_id,
-    oi.user_id,
-    oi.product_id,
-    oi.inventory_item_id,
+    --Foreign Keys
+    i.order_id,
+    i.user_id,
+    i.product_id,
+    i.inventory_item_id,
 
     -- Timestamps
-    o.order_created_at,
-    oi.item_created_at,
-    oi.shipped_at,
-    oi.delivered_at,
-    oi.returned_at,
+    i.order_created_at,
+    i.item_created_at,
+    i.shipped_at,
+    i.delivered_at,
+    i.returned_at,
 
-    -- Status
-    oi.status,
+    -- Item Financials
+    i.status,
+    i.sale_price,
+    i.cost,
+    i.profit,
 
-    -- Financials
-    oi.sale_price,
-    p.cost,
-    oi.sale_price - p.cost as profit
-from order_items oi
-left join orders o 
-    on oi.order_id = o.order_id
-left join products p 
-on oi.product_id = p.product_id
+
+from items i

@@ -19,17 +19,16 @@ product_info as (
         sum(sale_price) as total_sales,
         sum(profit) as total_profit,
         count(distinct case when returned_at is not null then order_item_id end) as total_units_returned
-    from {{ ref('fct_order_items') }}
+    from {{ ref('int_thelook_ecommerce__order_items_aggregated') }}
     group by 1
 )
+
 
 
 select
     -- Primary Key
     p.product_id,
 
-
-    
 
     -- Attributes
     p.product_name,
@@ -40,13 +39,13 @@ select
     p.sale_price,
     p.cost,
 
-    -- Product Metrics (from aggregation) + nulls handling
+    -- Metrics + nulls handling
     coalesce(pi.total_units_sold, 0) as total_units_sold,
     coalesce(pi.total_sales, 0) as total_sales,
     coalesce(pi.total_profit, 0) as total_profit,
     coalesce(pi.total_units_returned, 0) as total_units_returned,
 
-    --
+ 
 
     p.distribution_center_id,
     dc.city,

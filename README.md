@@ -21,7 +21,8 @@ This project demonstrates an end-to-end analytics engineering pipeline using Goo
 The data pipeline processes raw e-commerce transaction data stored in Google BigQuery in the following layers:
 * **Raw Layer (source):** Transactional source data in BigQuery.
 * **Staging (`stg_`):** Cleans, renames, and standardizes raw data while maintaining the original table granularity (1:1).
-* **Marts (`fct_`, `dim_`):** Transforms clean staging data into easy-to-use business tables following Kimball methodology.
+* **Intermediate (`int_`):** * Handles all heavy calculations and business logic in one place, so downstream models stay clean and easy to build.
+* **Marts (`fct_`, `dim_`):** Transforms clean staging data into easy-to-use business tables methodology.
 
 
 ## 🧪 Data Quality & Governance
@@ -41,10 +42,12 @@ The data pipeline processes raw e-commerce transaction data stored in Google Big
 * **Core Fields:** Set `not_null` on critical business fields like dates, cost, and prices and used `accepted_values` to make sure categorical fields only contain allowed values.
 * **Edge Case (`stg_products`):** Fixed 2 sold products with missing names using `COALESCE(name, CAST(id AS STRING))` in SQL while leaving a `not_null` test to catch future issues.
 
-
+### Intermediate Layer (`int_`):
+* **Financial Calculations**: Calculated item profit (sale_price - cost) in one place so all downstream models use the exact same logic.
+* **Data Level (Grain)**: Kept the data at the single item level (order_item_id) so it can easily feed both Fact and Dimension tables.
 
 ### Marts Layer (`fct_`, `dim_`):
-#### Transformed clean data into structured business models for analysis
+#### Transformed clean data into structured business models for analysis while creating calculated attributes to minimize runtime by reducing JOINs and GROUP BY operations
  **Fact Tables (`fct_`):** Tables that store key metrics and numbers to measure business performance:
   * `fct_order_items`: Tracks sold items, revenue, and profit for every item in an order.
   * `fct_sessions`: Tracks web traffic sources (like YouTube or Search) and conversion funnels per user session.

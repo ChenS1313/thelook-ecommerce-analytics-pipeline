@@ -4,14 +4,15 @@ with orders as
     from {{ ref('stg_thelook_ecommerce__orders') }}
 ),
 
-order_items_aggregated as (
+order_items_aggregated as 
+(
     select
         order_id,
         sum(sale_price) as order_sales,
         sum(cost) as order_cost,
         sum(profit) as order_profit,
         sum(case when returned_at is not null then 1 else 0 end) as returned_items_count
-    from {{ ref('fct_order_items') }}
+    from {{ ref('int_thelook_ecommerce__order_items_aggregated') }}
     group by 1
 )
 
@@ -33,7 +34,7 @@ select
     o.delivered_at,
     o.returned_at,
 
-    -- Metrics (from fct_order_items) + nulls handling
+    -- Metrics  + nulls handling
     coalesce(oia.order_sales, 0) as order_sales,
     coalesce(oia.order_cost, 0) as order_cost,
     coalesce(oia.order_profit, 0) as order_profit,
@@ -46,4 +47,3 @@ select
 from orders o
 left join order_items_aggregated oia
     on o.order_id = oia.order_id
-where o.status <> 'Cancelled'
