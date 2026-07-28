@@ -1,3 +1,4 @@
+
 # 🛒 TheLook E-Commerce: End-to-End Analytics Engineering & Business Intelligence
 
 ## Executive summary:
@@ -61,4 +62,9 @@ The data pipeline processes raw e-commerce transaction data stored in Google Big
 * **Keys:**  Applied `unique` and `not_null` on primary keys to prevent duplicate or missing records.
 * **Table Connections (`relationships`):** Verified that IDs in the fact tables (like `user_id` or `product_id`) exist in our main source tables (`stg_`), so we don't end up with orders linked to missing users or products.
 * **Logical Checks (`dbt_utils`):** Added basic sanity checks (using `dbt_utils.expression_is_true`) to make sure the data makes sense - like ensuring prices and session lengths aren't negative, and that every session has at least one event.
+
+<div align="center">
+<img width="900" height="500" alt="dbt_DAG" src="https://github.com/user-attachments/assets/a95a437b-5223-4333-8c7e-f3e9da546a06" />
+</div>
+
 
