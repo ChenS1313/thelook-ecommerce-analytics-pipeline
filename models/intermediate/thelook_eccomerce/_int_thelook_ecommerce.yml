@@ -1,0 +1,50 @@
+version: 2
+
+models:
+  - name: int_thelook_ecommerce__order_items
+    columns:
+      - name: order_item_id
+        description: Primary key
+        tests:
+          - unique
+          - not_null
+
+      - name: order_id
+        description: Foreign key -> References the orders table
+        tests:
+          - not_null
+
+      - name: user_id
+        description: Foreign key -> References the users table
+        tests:
+          - not_null
+
+      - name: product_id
+        description: Foreign key -> References the products table
+        tests:
+          - not_null
+
+      - name: inventory_item_id
+        description: Foreign key -> References the inventory_items table
+        tests:
+          - not_null
+
+      - name: cost
+        description: Cost of product 
+        tests:
+          - not_null
+          - dbt_utils.expression_is_true:
+              arguments:
+                expression: "> 0"
+
+      - name: sale_price
+        description: Price of product
+        tests:
+          - not_null
+          - dbt_utils.expression_is_true:
+              arguments:
+                expression: "> 0"
+
+      - name: profit
+        tests:
+          - not_null

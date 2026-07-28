@@ -1,0 +1,176 @@
+version: 2
+
+sources:
+  - name: thelook_ecommerce
+    database: bigquery-public-data
+    schema: thelook_ecommerce
+    description: Testings for raw data ingested directly from The Look e-commerce platform into BigQuery
+
+    tables:
+
+      - name: distribution_centers
+        description: Raw distribution centers data
+        columns:
+          - name: id
+            description: Primary key
+            tests:
+              - unique
+              - not_null
+              
+#-------------------------------------------------------------------------------------------------------#
+      - name: events
+        description: Raw events data from web and app (event defined as action)
+        config:
+          freshness:
+            warn_after: {count: 12, period: hour}
+            error_after: {count: 24, period: hour}
+          loaded_at_field: _etl_loaded_at
+        columns:
+          - name: id
+            description: Primary Key
+            tests:
+              - unique
+              - not_null
+        
+          - name: event_type
+            tests:
+              - not_null
+
+
+#-------------------------------------------------------------------------------------------------------#
+      - name: inventory_items
+        description: Raw inventory items data (all items that were and are in inventory)
+        config:
+          freshness:
+            warn_after: {count: 12, period: hour}
+            error_after: {count: 24, period: hour}
+          loaded_at_field: _etl_loaded_at
+        columns:
+          - name: id
+            description: Primary Key
+            tests:
+              - unique
+              - not_null
+          
+          - name: product_id
+            description: Foreign key -> References the products table
+            tests:
+              - not_null
+
+          - name: created_at
+            description: Timestamp when record was created in the table
+            tests:
+              - not_null
+
+
+#-------------------------------------------------------------------------------------------------------#
+      - name: order_items
+        description: Raw order items data (all items in all orders)
+        config:
+          freshness:
+            warn_after: {count: 12, period: hour}
+            error_after: {count: 24, period: hour}
+          loaded_at_field: _etl_loaded_at
+        columns:
+          - name: id
+            description: Primary Key
+            tests:
+              - unique
+              - not_null
+          
+          - name: order_id
+            description: Foreign key -> References the orders table
+            tests:
+              - not_null
+
+          - name: user_id
+            description: Foreign key -> References the users table
+            tests:
+              - not_null
+
+          - name: product_id
+            description: Foreign key -> References the users table
+            tests:
+              - not_null
+         
+          - name: inventory_item_id
+            description: Foreign key -> References the inventory_items table
+            tests:
+              - not_null
+
+
+          - name: created_at
+            description: Timestamp when the order item was placed
+            tests:
+              - not_null 
+       
+
+
+#-------------------------------------------------------------------------------------------------------#
+      - name: orders
+        description: Raw orders data 
+        config:
+          freshness:
+            warn_after: {count: 12, period: hour}
+            error_after: {count: 24, period: hour}
+          loaded_at_field: _etl_loaded_at
+        columns:
+          - name: order_id
+            description: Primary key
+            tests:
+              - not_null
+              - unique
+
+          - name: user_id
+            description: Foreign key -> References the users table
+            tests:
+              - not_null
+
+         
+          - name: created_at
+            description: Timestamp when the order was created
+            tests:
+              - not_null
+
+    
+          - name: status
+            description: Current order status
+            tests:
+              - not_null
+
+#-------------------------------------------------------------------------------------------------------#
+
+      - name: products
+        description: Raw products data
+        columns:
+          - name: id
+            description: Primary key
+            tests:
+              - not_null
+              - unique
+
+          - name: distribution_center_id
+            description: Foreign key -> References distribution_centers table
+            tests:
+              - not_null
+
+
+#-------------------------------------------------------------------------------------------------------#
+      - name: users
+        description: Raw users table
+        config:
+          freshness:
+            warn_after: {count: 24, period: hour}
+            error_after: {count: 48, period: hour}
+          loaded_at_field: _etl_loaded_at
+        columns:
+          - name: id
+            description: Primary key
+            tests:
+              - not_null
+              - unique
+
+          - name: created_at
+            description: Timestamp when the user account was created
+            tests:
+              - not_null 
