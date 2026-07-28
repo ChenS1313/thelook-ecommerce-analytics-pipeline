@@ -19,9 +19,9 @@ This project demonstrates an end-to-end analytics engineering pipeline using Goo
 ## 🏗️ Architecture & Data Pipeline
 The data pipeline processes raw e-commerce transaction data stored in Google BigQuery in the following layers:
 * **Raw Layer (source):** Transactional source data in BigQuery.
-* **Staging (`stg_`):** Cleans, renames, and standardizes raw data while maintaining the original table granularity.
+* **Staging (`stg_`):** Cleans, renames, and standardizes raw data while maintaining the original level of detail.
 * **Intermediate (`int_`):**  Handles all heavy calculations and business logic in one place, so downstream models stay clean and easy to build.
-* **Marts (`fct_`, `dim_`):** Transforms clean staging data into easy-to-use business tables methodology.
+* **Marts (`fct_`, `dim_`):** Transforms cleaned data into business-ready fact and dimension models for analytics and reporting.
 
 
 ## 🧪 Data Quality & Governance
@@ -43,7 +43,7 @@ The data pipeline processes raw e-commerce transaction data stored in Google Big
 
 ### Intermediate Layer (`int_`):
 * **Financial Calculations**: Calculated item profit (sale_price - cost) in one place so all downstream models use the exact same logic.
-* **Automated tests**: Created automated tests on the intermediate layer.
+* **Automated tests**: Created automated tests on the intermediate layer such as `unique` and `not_null` on the primary key and `not_null` on foreign keys.
 
 ### Marts Layer (`fct_`, `dim_`):
 #### Transformed clean data into structured business models for analysis while creating calculated attributes to minimize runtime by reducing JOINs and GROUP BY operations
