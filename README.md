@@ -64,7 +64,8 @@ The data pipeline processes raw e-commerce transaction data stored in Google Big
 * **Logical Checks (`dbt_utils`):** Added basic sanity checks (using `dbt_utils.expression_is_true`) to make sure the data makes sense - like ensuring prices and session lengths aren't negative, and that every session has at least one event.
 
 <div align="center">
-<img width="900" height="500" alt="dbt_DAG" src="https://github.com/user-attachments/assets/a95a437b-5223-4333-8c7e-f3e9da546a06" />
+<img width="1000" height="500" alt="dbt_DAG" src="https://github.com/user-attachments/assets/d7d6f7bf-e88d-4385-9a61-8d792052529c" />
+
 </div>
 
 
