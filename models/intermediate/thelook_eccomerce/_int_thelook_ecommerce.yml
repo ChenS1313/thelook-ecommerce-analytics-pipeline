@@ -48,3 +48,7 @@ models:
       - name: profit
         tests:
           - not_null
+
+      - name: user_country
+        tests:
+          - not_null

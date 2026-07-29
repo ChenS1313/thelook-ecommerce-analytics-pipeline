@@ -20,7 +20,10 @@ models:
                 to: ref('stg_thelook_ecommerce__users') # checks that every order has a user in the users table
                 field: user_id
       
-          
+      - name: user_country
+        tests:
+          - not_null
+
       - name: status
         tests:
           - not_null
@@ -289,11 +292,14 @@ models:
           - unique
           - not_null
 
-      # Foreign Keys & Source Relationships
       - name: order_id
         tests:
           - not_null
-
+      
+      - name: user_country
+        tests:
+          - not_null
+          
       - name: user_id
         description: Foreign key -> References the users table
         tests:
