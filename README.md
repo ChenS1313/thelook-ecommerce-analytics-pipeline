@@ -43,7 +43,7 @@ The data pipeline processes raw e-commerce transaction data stored in Google Big
 * **Edge Case (`stg_products`):** Fixed 2 sold products with missing names using `COALESCE(name, CAST(id AS STRING))` in SQL while leaving a `not_null` test to catch future issues.
 
 ### Intermediate Layer (`int_`):
-* **Financial Calculations**: Calculated item profit (sale_price - cost) in one place so all downstream models use the exact same logic.
+* **Financial Calculations**: Calculated item profit (sale_price - cost) in one place to ensure consistent logic while adding key columns for downstream models to inherit.
 * **Automated tests**: Created automated tests on the intermediate layer such as `unique` and `not_null` on the primary key and `not_null` on foreign keys.
 
 ### Marts Layer (`fct_`, `dim_`):
@@ -64,7 +64,8 @@ The data pipeline processes raw e-commerce transaction data stored in Google Big
 * **Logical Checks (`dbt_utils`):** Added basic sanity checks (using `dbt_utils.expression_is_true`) to make sure the data makes sense - like ensuring prices and session lengths aren't negative, and that every session has at least one event.
 
 <div align="center">
-<img width="900" height="500" alt="dbt_DAG" src="https://github.com/user-attachments/assets/a95a437b-5223-4333-8c7e-f3e9da546a06" />
+<img width="1000" height="500" alt="dbt_DAG" src="https://github.com/user-attachments/assets/d7d6f7bf-e88d-4385-9a61-8d792052529c" />
+
 </div>
 
 

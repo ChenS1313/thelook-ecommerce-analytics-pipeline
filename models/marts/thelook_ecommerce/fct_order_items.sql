@@ -20,6 +20,12 @@ select
     i.delivered_at,
     i.returned_at,
 
+    --Attributes
+    user_country,       
+    category,     
+    department,    
+    brand,
+
     -- Item Financials
     i.status,
     i.sale_price,

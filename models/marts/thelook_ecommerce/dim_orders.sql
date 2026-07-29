@@ -8,12 +8,13 @@ order_items_aggregated as
 (
     select
         order_id,
+        user_country,
         sum(sale_price) as order_sales,
         sum(cost) as order_cost,
         sum(profit) as order_profit,
         sum(case when returned_at is not null then 1 else 0 end) as returned_items_count
     from {{ ref('int_thelook_ecommerce__order_items') }}
-    group by 1
+    group by order_id, user_country
 )
 
 select
@@ -27,6 +28,7 @@ select
     o.status,
     o.gender,
     o.num_of_items,
+    oia.user_country,
 
     -- Timestamps
     o.created_at,

@@ -1,22 +1,35 @@
-with order_items as (
+with order_items as 
+(
     select * 
     from {{ ref('stg_thelook_ecommerce__order_items') }}
 ),
 
-products as (
+products as 
+(
     select 
         product_id,
-        cost
+        cost,
+        category,
+        department,
+        brand
     from {{ ref('stg_thelook_ecommerce__products') }}
 ),
 
-orders as (
+orders as 
+(
     select 
         order_id,
         created_at as order_created_at
     from {{ ref('stg_thelook_ecommerce__orders') }}
-)
+),
 
+users as 
+(
+    select 
+        user_id,
+        country
+    from {{ ref('stg_thelook_ecommerce__users') }}
+)
 select 
     -- Primary Key
     oi.order_item_id,
@@ -35,7 +48,11 @@ select
     oi.returned_at,
 
     -- Attributes
+    u.country as user_country,
     oi.status,
+    p.category,
+    p.department,
+    p.brand,
     oi.sale_price,
     p.cost,
     (oi.sale_price - p.cost) as profit
@@ -43,5 +60,7 @@ select
 from order_items oi
 left join orders o 
     on oi.order_id = o.order_id
+left join users u 
+    on oi.user_id = u.user_id
 left join products p 
     on oi.product_id = p.product_id
