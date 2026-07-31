@@ -25,7 +25,7 @@ This project demonstrates an end-to-end analytics engineering pipeline using Goo
 [In progress..]
 
 ## 🏗️ Architecture & Data Pipeline
-The data pipeline processes raw e-commerce transaction data stored in Google BigQuery in the following layers:
+The data pipeline processes raw e-commerce transaction data stored in **Google BigQuery** using **dbt (data build tool)** in the following layers:
 * **Raw Layer (source):** Transactional source data in BigQuery.
 * **Staging (`stg_`):** Cleans, renames and standardizes raw data while maintaining the original level of detail.
 * **Intermediate (`int_`):**  Handles all heavy calculations and business logic in one place, so downstream models stay clean and easy to build.
@@ -80,15 +80,19 @@ The data pipeline processes raw e-commerce transaction data stored in Google Big
 ### 🎯 Main Business Question
 > **"How can we grow company revenue and profits by focusing on the right countries and personalizing products for different customer groups?"**
 
-In this section, we use Python (**Pandas**, **NumPy**, **Seaborn**, and **Matplotlib**) to analyze our data, test ideas, and find clear answers to this question.
+In this section, i use Python (**Pandas**, **NumPy**, **Seaborn**, and **Matplotlib**) to analyze our data, test ideas, and find clear answers to this question.
 
-*(The full step-by-step code execution is available in the [Google Colab Notebook](https://colab.research.google.com/your-notebook-link))*
+*(The full step-by-step code execution is available in the [Google Colab Notebook](https://colab.research.google.com/drive/1A_9QnODzxgoPB1bAtr29iZjU3xE6st6m#scrollTo=L6gn22CVZgPX))*
 
-### 🧱 Tables Used for Analysis
-We run this analysis using our cleaned dbt models loaded directly from **Google BigQuery**:
+#### 🧱 Tables Used for Analysis
+I run this analysis using our cleaned dbt models loaded directly from **Google BigQuery**:
 * **`dim_users`**: Information about customers (age, gender, country) and how much they spend.
 * **`dim_products`**: Product details (category, brand, price).
 * **`dim_orders`**: General order details and order statuses.
 * **`fct_order_items`**: Detailed sales data, item prices, costs, and profit calculations.
+*  
+### 🛠️ Data Preparation 
+Before diving into the analysis, i made sure the data was clean, correct, and ready to use:
+- **Check Data Structure:** Used `.shape`, `.info()`, and `.head()` to verify table sizes, columns, and initial rows.
+- **Fix Data Types:** Fixed BigQuery import issues by converting financial columns from `object` back to `float64` and standardizing dates to `datetime64[ns]`.
 
-[In progress..]
