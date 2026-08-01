@@ -49,7 +49,7 @@ The data pipeline processes raw e-commerce transaction data stored in **Google B
 * **Cleaned Values:** Removed extra spaces with `TRIM()` and replaced missing values using `COALESCE()`.
 * **Edge Cases**:
   * **(`stg_products`):** Fixed 2 sold products with missing names using `COALESCE(name, CAST(id AS STRING))` in SQL while leaving a `not_null` test to catch future issues.
-  * **(`stg_users`):** Standardized localized country names (e.g., `'España'` -> `'Spain'`)
+  * **(`stg_users`):** Standardized localized country names (e.g., `'España'` -> `'Spain'`).
 
 #### Created automated tests on the staging layer
 * **Keys:** Applied `unique` and `not_null` on primary keys, and `not_null` on important foreign keys (like `order_id` in `stg_order_items`).
@@ -60,15 +60,19 @@ The data pipeline processes raw e-commerce transaction data stored in **Google B
 * **Financial Calculations**: Calculated item profit (sale_price - cost) in one place to ensure consistent logic while adding key columns for downstream models to inherit.
 * **Automated tests**: Created automated tests on the intermediate layer such as `unique` and `not_null` on the primary key and `not_null` on foreign keys.
 
+ > 💡**Note:** During the EDA phase, I realized that analyzing user demographics required standardized age segmentation. Instead of performing manual transformations in Pandas, I  went back and added the `age_group` logic directly into the Intermediate layer in **dbt**, so downstream models can inherit it. This ensures consistent data modeling across the warehouse and optimizes downstream query performance by eliminating redundant JOINs.
+
+
 ### Marts Layer (`fct_`, `dim_`):
 #### Transformed clean data into structured business models for analysis while creating calculated attributes to minimize runtime by reducing JOINs and GROUP BY operations
+
  **Fact Tables (`fct_`):** Tables that store key metrics and numbers to measure business performance:
   * `fct_order_items`: Tracks sold items, revenue, and profit for every item in an order.
   * `fct_sessions`: Tracks web traffic sources (like YouTube or Search) and conversion funnels per user session.
   * `fct_inventory_items`: Tracks inventory status and how many days items stay in the warehouse.
 
 **Dimension Tables (`dim_`):** Tables that provide details and context around the business entities:
- * `dim_users`: Contains customer profiles and overall spending habits.
+  * `dim_users`: Contains customer profiles and overall spending habits.
   * `dim_products`: Holds product details like category, brand, and retail price.
   * `dim_orders`: Summarizes total order amounts and total items to avoid heavy group-by queries.
 

@@ -21,10 +21,13 @@ select
     i.returned_at,
 
     --Attributes
-    user_country,       
+    customer_country,       
     category,     
     department,    
     brand,
+
+    i.customer_age,
+    i.customer_age_group,
 
     -- Item Financials
     i.status,
