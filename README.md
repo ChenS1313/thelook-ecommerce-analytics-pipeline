@@ -47,12 +47,15 @@ The data pipeline processes raw e-commerce transaction data stored in **Google B
 * **Reordered Columns:** Arranged columns logically (category -> brand -> product_name)
 * **Fixed Data Types:** Converted columns using `CAST()` (e.g., IDs to `STRING`, numbers to `NUMERIC`).
 * **Cleaned Values:** Removed extra spaces with `TRIM()` and replaced missing values using `COALESCE()`.
+* **Edge Cases**:
+  * **(`stg_products`):** Fixed 2 sold products with missing names using `COALESCE(name, CAST(id AS STRING))` in SQL while leaving a `not_null` test to catch future issues.
+  * **(`stg_users`):** Standardized localized country names (e.g., `'España'` -> `'Spain'`)
 
 #### Created automated tests on the staging layer
 * **Keys:** Applied `unique` and `not_null` on primary keys, and `not_null` on important foreign keys (like `order_id` in `stg_order_items`).
 * **Core Fields:** Set `not_null` on critical business fields like dates, cost, and prices and used `accepted_values` to make sure categorical fields only contain allowed values.
-* **Edge Case (`stg_products`):** Fixed 2 sold products with missing names using `COALESCE(name, CAST(id AS STRING))` in SQL while leaving a `not_null` test to catch future issues.
 
+  
 ### Intermediate Layer (`int_`):
 * **Financial Calculations**: Calculated item profit (sale_price - cost) in one place to ensure consistent logic while adding key columns for downstream models to inherit.
 * **Automated tests**: Created automated tests on the intermediate layer such as `unique` and `not_null` on the primary key and `not_null` on foreign keys.
