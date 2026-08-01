@@ -88,14 +88,21 @@ In this section, i use Python (**Pandas**, **NumPy**, **Seaborn**, and **Matplot
 *(The full step-by-step code execution is available in the [Google Colab Notebook](https://colab.research.google.com/drive/1A_9QnODzxgoPB1bAtr29iZjU3xE6st6m#scrollTo=L6gn22CVZgPX))*
 
 #### 🧱 Tables Used for Analysis
-I run this analysis using our cleaned dbt models loaded directly from **Google BigQuery**:
+In this analysis, i used our cleaned dbt models loaded directly from **Google BigQuery**:
 * **`dim_users`**: Information about customers (age, gender, country) and how much they spend.
 * **`dim_products`**: Product details (category, brand, price).
 * **`dim_orders`**: General order details and order statuses.
 * **`fct_order_items`**: Detailed sales data, item prices, costs, and profit calculations.
-*  
-### 🛠️ Data Preparation 
+  
+### 🛠️ Data Preparation & Formatting 
 Before diving into the analysis, i made sure the data was clean, correct, and ready to use:
 - **Check Data Structure:** Used `.shape`, `.info()`, and `.head()` to verify table sizes, columns, and initial rows.
-- **Fix Data Types:** Fixed BigQuery import issues by converting financial columns from `object` back to `float64` and standardizing dates to `datetime64[ns]`.
+- **Fix Data Types:** Fixed BigQuery import issues by converting financial columns from `object` back to `float64` and standardizing dates to `datetime64[s]`.
 
+### 📊 Data Overview & Key Insights
+I ran a statistical overview across all relevant tables using `.describe()` to uncover key numerical insights:
+* **User Activation Gap:** Out of 100,000 registered users, only **79,931 placed at least one order**. This leaves ~20,000 "dormant" accounts (20%) that registered but never placed an order.
+* **Strong Pricing Strategy:** The average sale price ($59.22) is more than **double the average cost** (\$28.48), demonstrating a good pricing model.
+* **Shipping and Delivery:** Most orders are shipped within **1 day** and delivered within **~3 days on average**.
+
+> 💡 *For the complete table-by-table summary and all 13 insights, check out the [Full EDA Notebook](https://colab.research.google.com/drive/1A_9QnODzxgoPB1bAtr29iZjU3xE6st6m#scrollTo=Z9Pp1QGDLD0c).*
