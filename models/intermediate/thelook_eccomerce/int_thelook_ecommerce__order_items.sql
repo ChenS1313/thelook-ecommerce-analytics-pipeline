@@ -28,7 +28,8 @@ users as
     select 
         user_id,
         country,
-        age
+        age,
+        gender
     from {{ ref('stg_thelook_ecommerce__users') }}
 )
 select 
@@ -49,6 +50,7 @@ select
     oi.returned_at,
 
     -- Attributes
+    u.gender,
     u.country as customer_country,
     u.age as customer_age,
     CASE 

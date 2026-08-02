@@ -21,10 +21,11 @@ select
     i.returned_at,
 
     --Attributes
-    customer_country,       
-    category,     
-    department,    
-    brand,
+    i.customer_country,       
+    i.category,     
+    i.department,    
+    i.brand,
+    i.gender as customer_gender,
 
     i.customer_age,
     i.customer_age_group,

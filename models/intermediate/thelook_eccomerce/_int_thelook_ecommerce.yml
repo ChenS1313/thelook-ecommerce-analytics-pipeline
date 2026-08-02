@@ -58,3 +58,10 @@ models:
           - accepted_values:
                 arguments:
                   values: ['<18', '18-24', '25-34', '35-49','50+']
+
+
+      - name: gender
+        tests:
+          - accepted_values:
+                arguments:
+                  values: ['F','M']
