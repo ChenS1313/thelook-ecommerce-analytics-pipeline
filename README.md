@@ -3,7 +3,8 @@
 
 ## Executive summary:
 
-This project demonstrates an end-to-end analytics engineering pipeline using Google BigQuery and dbt to transform raw e-commerce data into a structured, production-ready data warehouse for downstream analytics.
+This project demonstrates an end-to-end analytics engineering pipeline using **Google BigQuery** and **dbt** to transform raw e-commerce data into structured, analysis-ready models. It delivers actionable business insights through post-modeling EDA in **Python** and features an interactive **Tableau** dashboard.
+
 [In progress..]
 
 ## 📋 Table of Contents
@@ -87,7 +88,7 @@ The data pipeline processes raw e-commerce transaction data stored in **Google B
 ### 🎯 Main Business Question
 > **"How can we grow company revenue and profits by focusing on the right countries and personalizing products for different customer groups?"**
 
-In this section, i use Python (**Pandas**, **NumPy**, **Seaborn**, and **Matplotlib**) to analyze our data, test ideas, and find clear answers to this question.
+In this section, i use Python (**Pandas**, **NumPy**, **Seaborn**, and **Matplotlib**) to analyze our data and find clear answers to this question.
 
 *(The full step-by-step code execution is available in the [Google Colab Notebook](https://colab.research.google.com/drive/1A_9QnODzxgoPB1bAtr29iZjU3xE6st6m#scrollTo=L6gn22CVZgPX))*
 
@@ -109,4 +110,28 @@ I ran a statistical overview across all relevant tables using `.describe()` to u
 * **Strong Pricing Strategy:** The average sale price ($59.22) is more than **double the average cost** (\$28.48), demonstrating a good pricing model.
 * **Shipping and Delivery:** Most orders are shipped within **1 day** and delivered within **~3 days on average**.
 
-> 💡 *For the complete table-by-table summary and all 13 insights, check out the [Full EDA Notebook](https://colab.research.google.com/drive/1A_9QnODzxgoPB1bAtr29iZjU3xE6st6m#scrollTo=Z9Pp1QGDLD0c).*
+> *For the complete table-by-table summary and all 13 insights, check out the [Full EDA Notebook](https://colab.research.google.com/drive/1A_9QnODzxgoPB1bAtr29iZjU3xE6st6m#scrollTo=Z9Pp1QGDLD0c).*
+
+
+### 💡 Vizualisations and Business Insights & Actions
+####  1 Market Opportunity Identification
+*Which markets present high Average Order Value (AOV) despite low current order volume?*
+
+<img width="600" height="400" alt="1st_vizualisation" src="https://github.com/user-attachments/assets/773cae3e-a843-4bff-b5a9-fa00e57fb866" />
+
+
+* **Retention (US, China, Brazil):** These markets drive the highest order volume. Focus on targeted loyalty programs to keep existing buyers coming back.
+* **Growth (Belgium & Australia):** These markets yield the highest AOV but low order volume. Run ads aimed at new shoppers to grow order volume while keeping AOV high.
+
+<br>
+
+
+####  2 Product-Demographic Fit Analysis
+*Which product categories are bought the most across different age groups and genders?*
+
+<img width="1646" height="626" alt="2nd_vizualisation" src="https://github.com/user-attachments/assets/1e6fe2f1-6303-462f-9749-6fd8f99300ce" />
+
+* **Core Categories (Coats & Jeans):** These are top sellers across almost all age groups. Keep inventory levels high and prioritize them in core campaigns.
+* **Youth Segment (<18):** Demand for Outerwear & Coats peaks in this demographic. Launch targeted seasonal campaigns to capture youth market share.
+* **Male Focus:** Men spend heavily on high-ticket items like Suits and Sweaters. Ads targeting men should highlight premium, high-value items.
+* **Female Focus:** Women buy across a broader range of categories like Dresses and Intimates. Ads targeting women should offer diverse collection varieties.
