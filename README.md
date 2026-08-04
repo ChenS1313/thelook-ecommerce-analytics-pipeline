@@ -12,7 +12,7 @@ This project demonstrates an end-to-end analytics engineering pipeline using **G
 * [🏗️ Architecture & Data Pipeline](#-architecture--data-pipeline)
 * [🧪 Data Quality & Governance](#-data-quality--governance)
 * [🔎 Exploratory Data Analysis (EDA) & Insights](#-exploratory-data-analysis-eda--insights)
-  
+  ## 📊 Interactive Dashboard
 [In progress..]
 
 
@@ -21,7 +21,8 @@ This project demonstrates an end-to-end analytics engineering pipeline using **G
 
 - **Data Warehouse:** Google BigQuery
 - **Data Transformation & Modeling:** dbt Cloud (SQL)
-- **Exploratory Data Analysis (EDA):** Python (Pandas, Matplotlib, Seaborn)
+- **Exploratory Data Analysis (EDA):** Python (Pandas, Numpy, Matplotlib, Seaborn)
+- **Data Visualization:** Tableau Public
   
 [In progress..]
 
@@ -110,7 +111,7 @@ I ran a statistical overview across all relevant tables using `.describe()` to u
 * **Strong Pricing Strategy:** The average sale price ($59.22) is more than **double the average cost** (\$28.48), demonstrating a good pricing model.
 * **Shipping and Delivery:** Most orders are shipped within **1 day** and delivered within **~3 days on average**.
 
-> *For the complete table-by-table summary and all 13 insights, check out the [Full EDA Notebook](https://colab.research.google.com/drive/1A_9QnODzxgoPB1bAtr29iZjU3xE6st6m#scrollTo=Z9Pp1QGDLD0c).*
+> *For the complete table-by-table summary and all 13 insights, check out the [Full EDA Section](https://colab.research.google.com/drive/1A_9QnODzxgoPB1bAtr29iZjU3xE6st6m#scrollTo=Z9Pp1QGDLD0c) in the Colab notebook.*
 
 
 ### 💡 Vizualisations and Business Insights & Actions
@@ -135,3 +136,17 @@ I ran a statistical overview across all relevant tables using `.describe()` to u
 * **Youth Segment (<18):** Demand for Outerwear & Coats peaks in this demographic. Launch targeted seasonal campaigns to capture youth market share.
 * **Male Focus:** Men spend heavily on high-ticket items like Suits and Sweaters. Ads targeting men should highlight premium, high-value items.
 * **Female Focus:** Women buy across a broader range of categories like Dresses and Intimates. Ads targeting women should offer diverse collection varieties.
+
+
+
+## 📊 Interactive Dashboard
+
+This dashboard tracks the company's overall performance and evaluates whether the recommended actions from the EDA section successfully increased sales.
+
+Note:
+Since **Tableau Public** does not support a direct connection to **Google BigQuery**, the processed and cleaned Data Marts were exported using Python into a single multi-sheet Excel workbook (`Ecommerce_Data_Marts.xlsx`). 
+This Excel file was then loaded into Tableau Public to build the interactive dashboard.
+
+> *For the complete exporting process, check out the [Export Section](https://colab.research.google.com/drive/1A_9QnODzxgoPB1bAtr29iZjU3xE6st6m#scrollTo=0ebCuBD4uP59) in the Colab notebook.*
+
+[In progress..]
