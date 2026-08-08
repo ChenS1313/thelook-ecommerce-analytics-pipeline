@@ -8,13 +8,14 @@ user_orders_summary as
 (
     select
         user_id,
+        customer_age_group,
         min(order_created_at) as first_order_date,
         max(order_created_at) as most_recent_order_date,
         count(distinct order_id) as total_orders,
         sum(sale_price) as lifetime_value,
         sum(profit) as total_profit
     from {{ ref('int_thelook_ecommerce__order_items') }}
-    group by 1
+    group by 1,2
 )
 
 select
@@ -25,6 +26,7 @@ select
     u.first_name,
     u.last_name,
     u.age,
+    uos.customer_age_group as user_age_group,
     u.gender,
     u.email,
     u.address,

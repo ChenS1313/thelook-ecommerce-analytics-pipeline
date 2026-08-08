@@ -27,7 +27,9 @@ users as
 (
     select 
         user_id,
-        country
+        country,
+        age,
+        gender
     from {{ ref('stg_thelook_ecommerce__users') }}
 )
 select 
@@ -48,7 +50,17 @@ select
     oi.returned_at,
 
     -- Attributes
-    u.country as user_country,
+    u.gender,
+    u.country as customer_country,
+    u.age as customer_age,
+    CASE 
+        WHEN u.age < 18 THEN '<18'
+        WHEN u.age BETWEEN 18 AND 24 THEN '18-24'
+        WHEN u.age BETWEEN 25 AND 34 THEN '25-34'
+        WHEN u.age BETWEEN 35 AND 49 THEN '35-49'
+        WHEN u.age >= 50 THEN '50+'
+        ELSE 'Unknown'
+    END AS customer_age_group,
     oi.status,
     p.category,
     p.department,

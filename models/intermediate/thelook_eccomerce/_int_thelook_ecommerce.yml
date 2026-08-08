@@ -49,6 +49,19 @@ models:
         tests:
           - not_null
 
-      - name: user_country
+      - name: customer_country
         tests:
           - not_null
+
+      - name: customer_age_group
+        tests:
+          - accepted_values:
+                arguments:
+                  values: ['<18', '18-24', '25-34', '35-49','50+']
+
+
+      - name: gender
+        tests:
+          - accepted_values:
+                arguments:
+                  values: ['F','M']

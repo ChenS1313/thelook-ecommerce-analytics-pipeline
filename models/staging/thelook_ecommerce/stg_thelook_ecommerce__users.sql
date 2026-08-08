@@ -18,7 +18,11 @@ renamed as (
         trim(street_address) as address ,
         coalesce(NULLIF(TRIM(city), 'null'), 'Unknown') as city,
         trim(state) as state,
-        trim(country) as country,
+        case -- Standardizes country names
+            when trim(country) ='España' then 'Spain'
+            when trim(country) ='Deutschland' then 'Germany'
+            else trim(country)
+        end as country,
         postal_code,
         latitude,
         longitude,
