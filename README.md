@@ -1,15 +1,13 @@
 
 # 🛒 TheLook E-Commerce: End-to-End Analytics Engineering & Business Intelligence
 
-## Executive summary:
+## Executive summary
 
-This project demonstrates an end-to-end analytics engineering pipeline using **Google BigQuery** and **dbt** to transform raw e-commerce data into structured, analysis-ready models. It delivers actionable business insights through post-modeling EDA in **Python** and features an interactive **Tableau** dashboard.
+This project demonstrates an end-to-end analytics engineering pipeline using **dbt** on **Google BigQuery** to transform raw e-commerce data into structured, analysis-ready models. It delivers actionable business insights through post-modeling EDA in **Python** and features an interactive **Tableau** dashboard.
 
 
+<img width="1912" height="1037" alt="dashboard" src="https://github.com/user-attachments/assets/ee527613-da6d-4dc4-ab69-7399176a092e" />
 
-<img width="1912" height="1041" alt="dashboard" src="https://github.com/user-attachments/assets/1698955e-03c9-4866-9c07-f01194ecd9a0" />
-
-[In progress..]
 
 ## 📋 Table of Contents
 * [🛠️ The Tech Stack](#-the-tech-stack)
@@ -17,7 +15,6 @@ This project demonstrates an end-to-end analytics engineering pipeline using **G
 * [🔎 Exploratory Data Analysis (EDA) & Insights](#-exploratory-data-analysis-eda--insights)
 * [📊 Interactive Dashboard](#-interactive-dashboard)
 
-[In progress..]
 
 ## 🛠️ The Tech Stack
 
@@ -26,7 +23,7 @@ This project demonstrates an end-to-end analytics engineering pipeline using **G
 - **Exploratory Data Analysis (EDA):** Python (Pandas, Numpy, Matplotlib, Seaborn)
 - **Data Visualization:** Tableau Public
   
-[In progress..]
+
 
 ## 🏗️ Data Modeling & Pipeline Architecture
 
@@ -107,19 +104,19 @@ In this section, i use Python (**Pandas**, **NumPy**, **Seaborn**, and **Matplot
 *(The full step-by-step code execution is available in the [Google Colab Notebook](https://colab.research.google.com/drive/1A_9QnODzxgoPB1bAtr29iZjU3xE6st6m#scrollTo=L6gn22CVZgPX))*
 
 #### Tables Used for Analysis
-In this analysis, i used our cleaned dbt models loaded directly from **Google BigQuery**:
+This analysis uses the cleaned dbt models loaded directly from **Google BigQuery**:
 * **`dim_users`**: Information about customers (age, gender, country) and how much they spend.
 * **`dim_products`**: Product details (category, brand, price).
 * **`dim_orders`**: General order details and order statuses.
 * **`fct_order_items`**: Detailed sales data, item prices, costs, and profit calculations.
   
 ###  Data Preparation & Formatting 
-Before diving into the analysis, i made sure the data was clean, correct, and ready to use:
+Before diving into the analysis, the following validation and cleaning steps were performed:
 - **Check Data Structure:** Used `.shape`, `.info()`, and `.head()` to verify table sizes, columns, and initial rows.
 - **Fix Data Types:** Fixed BigQuery import issues by converting financial columns from `object` back to `float64` and standardizing dates to `datetime64[s]`.
 
 ### Data Overview & Key Insights
-I ran a statistical overview across all relevant tables using `.describe()` to uncover key numerical insights:
+Running `.describe()` across all relevant tables uncovered key numerical insights:
 * **User Activation Gap:** Out of 100,000 registered users, only **79,931 placed at least one order**. This leaves ~20,000 "dormant" accounts (20%) that registered but never placed an order.
 * **Strong Pricing Strategy:** The average sale price ($59.22) is more than **double the average cost** (\$28.48), demonstrating a good pricing model.
 * **Shipping and Delivery:** Most orders are shipped within **1 day** and delivered within **~3 days on average**.
@@ -155,12 +152,15 @@ I ran a statistical overview across all relevant tables using `.describe()` to u
 
 ## 📊 Interactive Dashboard
 
-This dashboard tracks the company's overall performance and evaluates whether the recommended actions from the EDA section successfully increased sales.
+This dashboard tracks the company's overall performance and evaluates whether the recommended actions from the EDA section successfully increased sales. It
+features a custom period selector (**All Time, YTD, QTD, MTD, WTD**) for real-time operational and strategic tracking.
 
-Note:
-Since **Tableau Public** does not support a direct connection to **Google BigQuery**, the processed and cleaned Data Marts were exported using Python into a single multi-sheet Excel workbook (`Ecommerce_Data_Marts.xlsx`). 
+🔗 **[Live Interactive Dashboard on Tableau Public](https://public.tableau.com/views/Ecommerce_dashboard_17861873838030/Dashboard?:language=en-US&:sid=&:redirect=auth&:display_count=n&:origin=viz_share_link)**
+
+> ℹ️ **Technical & Data Notes:**
+> * Data is updated up to **August 5, 2026**
+> * Since **Tableau Public** does not support a direct connection to **Google BigQuery**, the processed and cleaned Data Marts were exported using Python into a single multi-sheet Excel workbook (`Ecommerce_Data_Marts.xlsx`). 
 This Excel file was then loaded into Tableau Public to build the interactive dashboard.
+> * For the complete exporting process, check out the [Export Section](https://colab.research.google.com/drive/1A_9QnODzxgoPB1bAtr29iZjU3xE6st6m#scrollTo=0ebCuBD4uP59) in the Colab notebook.
 
-> *For the complete exporting process, check out the [Export Section](https://colab.research.google.com/drive/1A_9QnODzxgoPB1bAtr29iZjU3xE6st6m#scrollTo=0ebCuBD4uP59) in the Colab notebook.*
 
-[In progress..]
