@@ -155,7 +155,7 @@ Running `.describe()` across all relevant tables uncovered key numerical insight
 This dashboard tracks the company's overall performance and evaluates whether the recommended actions from the EDA section successfully increased sales. It
 features a custom period selector (**All Time, YTD, QTD, MTD, WTD**) for real-time operational and strategic tracking.
 
-🔗 **[Live Interactive Dashboard on Tableau Public](https://public.tableau.com/views/Ecommerce_dashboard_17861873838030/Dashboard?:language=en-US&:sid=&:redirect=auth&:display_count=n&:origin=viz_share_link)**
+🔗 **[Live Interactive Dashboard on Tableau Public](https://public.tableau.com/views/Ecommerce_dashboard_17861873838030/Dashboard?:language=en-US&publish=yes&:sid=&:redirect=auth&:display_count=n&:origin=viz_share_link)**
 
 > ℹ️ **Technical & Data Notes:**
 > * Data is updated up to **August 9, 2026**
