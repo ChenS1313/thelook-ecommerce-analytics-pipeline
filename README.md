@@ -158,7 +158,7 @@ features a custom period selector (**All Time, YTD, QTD, MTD, WTD**) for real-ti
 🔗 **[Live Interactive Dashboard on Tableau Public](https://public.tableau.com/views/Ecommerce_dashboard_17861873838030/Dashboard?:language=en-US&:sid=&:redirect=auth&:display_count=n&:origin=viz_share_link)**
 
 > ℹ️ **Technical & Data Notes:**
-> * Data is updated up to **August 5, 2026**
+> * Data is updated up to **August 9, 2026**
 > * Since **Tableau Public** does not support a direct connection to **Google BigQuery**, the processed and cleaned Data Marts were exported using Python into a single multi-sheet Excel workbook (`Ecommerce_Data_Marts.xlsx`). 
 This Excel file was then loaded into Tableau Public to build the interactive dashboard.
 > * For the complete exporting process, check out the [Export Section](https://colab.research.google.com/drive/1A_9QnODzxgoPB1bAtr29iZjU3xE6st6m#scrollTo=0ebCuBD4uP59) in the Colab notebook.
